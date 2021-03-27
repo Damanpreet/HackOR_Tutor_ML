@@ -2,21 +2,52 @@
 <html lang='en'>
 
     <head>
-
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Tutor ML</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+        <script src="{{ url_for('static', filename='index.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+
     <body>
-
-        <a href="/video1">Video 1</a> <br>
-
-        <a href="/video2">Video 2</a><br>
+        <!-- https://www.w3schools.com/howto/howto_js_sidenav.asp -->
+        <nav class="sideNav" > 
+            <a href="#" id="video_1" onclick="switchVideo(this.id)"> Video 1 </a> 
+            <a href="#" id="video_2" onclick="switchVideo(this.id)"> Video 2 </a>
+            <a href="#" id="video_3" onclick="switchVideo(this.id)"> Video 3 </a>
+        </nav>
         
-        <a href="/video3">Video 3</a><br>
+        <div class="main">
+            <h2> You are viewing Tutor 1 tutorials </h2>
+            <div id="video_div">
+                <video id="video_1_play" width="1000" height="750" onclick="playVideo(this.id)" controls>
+                    <source src="/static/videos/video_1.mp4" type="video/mp4">
+                </video>
+            </div>
+
+        </div>
+        
+
+        <!-- <form action = "CONNECT_TO_BACK_END" method="POST">
+            <label> Feedback about this video:</label><br><br>
+
+
+            <textarea rows = "5" cols = "60" id="CONNECT_TO_BACK_END" name = "Feedback">
+            Enter details here...
+            </textarea><br>
+
+            <input type = "submit" value = "submit"/>
+
+        </form>
+
+
+        <a href="/video1" width="640" height="480">Video 1</a> <br>
+
+        <a href="/video2" width="640" height="480">Video 2</a><br>
+        
+        <a href="/video3" width="640" height="480">Video 3</a><br> -->
 
         
     </body>
