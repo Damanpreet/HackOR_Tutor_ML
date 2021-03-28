@@ -123,7 +123,7 @@ def video_stop():
 
 @app.route('/results')
 def results():
-    return return_template('results.html')
+    return_template('results.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
