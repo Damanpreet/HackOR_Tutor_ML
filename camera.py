@@ -12,6 +12,5 @@ class VideoRecorder():
         if not ret:
             return []
         else:
-            # print(frame.shape)
-            print("success!")
+            # print("success!")
             return frame
