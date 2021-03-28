@@ -17,9 +17,9 @@ global blink_counter #, total_blinks
 global yawn_counter #, total_yawns
 global frameCount
 recorder = None
-# Blink initializations
+frameCount = 0
+# Blink and Yawn initializations
 blink_counter, yawn_counter = 0, 0
-# Yawn initializations
 total_blinks, total_yawns = defaultdict(lambda: 0), defaultdict(lambda: 0)
 total_drowsiness = defaultdict(lambda: 0)
 
