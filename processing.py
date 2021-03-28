@@ -9,7 +9,6 @@
 # Import packages
 from scipy.spatial import distance as dist
 import numpy as np
-import dlib
 import cv2
 
 '''
@@ -58,7 +57,7 @@ def draw_landmarks(face_part, landmarks,frame):
     for point in face_part:
         x, y = landmarks.part(point).x, landmarks.part(point).y
         landmarks_list.append([x, y])
-        # cv2.circle(frame, (x, y), 2, (0, 0, 255), -1)
+        cv2.circle(frame, (x, y), 2, (0, 0, 255), -1)
     return np.array(landmarks_list)
 
 
@@ -103,14 +102,15 @@ def analyze_frame(frame, cfg, detector, predictor):
         right_ear = eye_aspect_ratio(right_eye_points)  # Right eye aspect ratio
 
         ear = (left_ear + right_ear) / 2.0  # Average eye aspect ratio
+        cv2.putText(frame, "E.A.R. : {:.2f}".format(ear), (10,30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
         lar = lips_aspect_ratio(lips_points)  # Lips aspect ratio
+        cv2.putText(frame, "L.A.R. : {:.2f}".format(lar), (10,90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
         if ear < cfg.getfloat('YAWN', 'ear_thresh'):
             blinking = True
         if lar > cfg.getfloat('YAWN', 'lar_thresh'):
             yawning = True
-
-    print(blinking, yawning)
-    return blinking, yawning # , ear, lar
+            
+    return blinking, yawning, frame # , ear, lar
 

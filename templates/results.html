@@ -6,25 +6,31 @@
     </head>
 
     <body>
-        <table>
+        <table border="1" style="width:80%">
             <thead>
-                <th>Video ID</th>
-                <th>Camera and FPS</th>
-                <th>Total Number Of Blinks</th>
-                <th>Total Drowisness</th>
-                <th>Total Yawns</th>
+                <tr style="text-align: right;">
+                    <th></th>
+                    <th>Video ID</th>
+                    <th>Number of Users</th>
+                    <th>Average Elapsed Time</th>
+                    <th>Average Number Of Blinks</th>
+                    <th>Average Drowisness</th>
+                    <th>Average Yawns</th>
+                </tr>
             </thead>
 
             <tbody>
-                {% for r in results %}
-                <tr>
-                    <td>{{ r[0] }}</td>
-                    <td>{{ r[1] }}</td>
-                    <td>{{ r[2] }}</td>
-                    <td>{{ r[3] }}</td>
-                    <td>{{ r[4] }}</td>
-                </tr>
-               {% endfor %}
+                {% for key,value in videoData.items() %}
+                    <tr>
+                        <td> {{ loop.index0 }}</td>
+                        <td> {{ key }} </td>
+                        <td> {{ value["userCount"] }}</td>
+                        <td> {{ value["time"] }} </td>
+                        <td> {{ value["total_blinks"] }} </td>
+                        <td> {{ value["total_drowsiness"] }} </td>
+                        <td> {{ value["total_yawns"] }} </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 

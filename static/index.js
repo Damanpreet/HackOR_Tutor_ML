@@ -8,14 +8,20 @@ function switchVideo(videoId){
 }
 
 function playVideo(videoId){
+    var name = document.getElementById("username");
+    console.log(name.innerHTML);
+    if (name.innerHTML == "Enter username."){
+        alert("Please enter your user name.");
+        return false;
+    }
     var status = document.getElementById(videoId).getAttribute("status");
     if (status == null || status=="off"){
         document.getElementById(videoId).setAttribute("status", "on");
-        $.get("/video_feed", { id: videoId });
+        $.get("/video_feed", { id: videoId, username: name.innerHTML });
     }
     else{
         document.getElementById(videoId).setAttribute("status", "off");
-        $.get("/video_stop", { id: videoId });
+        $.get("/video_stop", { id: videoId, username: name.innerHTML });
     }
     console.log("Status: " + document.getElementById(videoId).getAttribute("status"));
 }
