@@ -15,7 +15,7 @@ function playVideo(videoId){
     }
     else{
         document.getElementById(videoId).setAttribute("status", "off");
-        $.get("/video_stop")
+        $.get("/video_stop", { id: videoId });
     }
     console.log("Status: " + document.getElementById(videoId).getAttribute("status"));
 }

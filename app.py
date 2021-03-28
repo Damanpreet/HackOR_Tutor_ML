@@ -47,8 +47,8 @@ def gen(camera, videoId):
         prev = time.time()
 
         if len(frame)==0:
-            print(frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
-            # return frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns # assuming cv2 captures 30 frames/sec.
+            print(videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
+            # return videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns # assuming cv2 captures 30 frames/sec.
             break
 
         blinking, yawning = analyze_frame(frame, cfg, detector, predictor)
@@ -76,7 +76,10 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    videoId = request.args['id']
+    try:
+        videoId = request.args['id']
+    except:
+        videoId = 0
     global recorder
     recorder = VideoRecorder()
     gen(recorder, videoId)
@@ -84,14 +87,18 @@ def video_feed():
 
 @app.route('/video_stop')
 def video_stop():
+    try:
+        videoId = request.args['id']
+    except:
+        videoId = 0
     global recorder, blink_counter, yawn_counter
     global frameCount
     del recorder
     recorder = None
     blink_counter, yawn_counter = 0, 0
     print("resource released!")
-    print(frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
-    # return frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns
+    print(videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
+    # return videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns
     return {}
 
 
