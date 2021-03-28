@@ -22,7 +22,6 @@ frameCount = 0
 blink_counter, yawn_counter = 0, 0
 total_blinks, total_yawns = defaultdict(lambda: 0), defaultdict(lambda: 0)
 total_drowsiness = defaultdict(lambda: 0)
-
 # read the config file.
 cfg = configparser.ConfigParser()
 cfg.read('config.INI')
@@ -38,20 +37,25 @@ def gen(camera, videoId):
     prev = 0
 
     while recorder:
+        
         time_elapsed = time.time() - prev
         frame = camera.get_frame()
 
         if time_elapsed < 1/cfg.getint('CAMERA', 'fps'):    # to handle number of frames to be processed in a second.
+            print(time_elapsed)
+            
             continue
         frameCount += 1
         prev = time.time()
 
         if len(frame)==0:
+            
             print(videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
             # return videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns # assuming cv2 captures 30 frames/sec.
             break
 
         blinking, yawning = analyze_frame(frame, cfg, detector, predictor)
+        
         if blinking:
             blink_counter += 1
         else:
@@ -72,9 +76,10 @@ def gen(camera, videoId):
 @app.route('/')
 @app.route('/index')
 def index():
+
     return render_template('index.html')
 
-@app.route('/video_feed')
+@app.route('/video_feed', methods=['GET', 'POST'])
 def video_feed():
     try:
         videoId = request.args['id']
@@ -85,7 +90,7 @@ def video_feed():
     gen(recorder, videoId)
     return {}
 
-@app.route('/video_stop')
+@app.route('/video_stop', methods=['GET', 'POST'])
 def video_stop():
     try:
         videoId = request.args['id']
@@ -97,10 +102,28 @@ def video_stop():
     recorder = None
     blink_counter, yawn_counter = 0, 0
     print("resource released!")
-    print(videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
-    # return videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns
-    return {}
 
+    results = []
+
+    results.append(videoId)
+    results.append(frameCount/cfg.getint('CAMERA', 'fps'))
+    results.append(total_blinks)
+    results.append(total_drowsiness)
+    results.append(total_yawns)
+ 
+    print("\n\n")
+
+    for i in results:
+        print (i)
+    
+    print("\n\n")
+
+    # print(videoId, frameCount/cfg.getint('CAMERA', 'fps'), total_blinks, total_drowsiness, total_yawns)
+    return render_template('results.html', results = results)
+
+@app.route('/results')
+def results():
+    return render_template('results.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
