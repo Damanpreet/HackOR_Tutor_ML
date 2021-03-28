@@ -20,11 +20,6 @@ Landmarks |   0  1  2  3  4  5
  Left Eye : [36,37,38,39,40,41]
 Right Eye : [42,43,44,45,46,47]
 '''
-
-# e.a.r & l.a.r, threshold values
-ear_thresh = 0.3
-lar_thresh = 0.5
-
 def eye_aspect_ratio(eye):
     # Vertical distances
     dist1 = dist.euclidean(eye[1], eye[5])  # P2-P6
@@ -36,15 +31,12 @@ def eye_aspect_ratio(eye):
 
     return ear
 
-
 '''
 Lips Aspect Ratio (L.A.R.)
 Function to calculate lips aspect ratio in the same way as in E.A.R.
 Landmarks |   0  1  2  3  4  5  6  7
      Lips : [60,61,62,63,64,65,66,67]
 '''
-
-
 def lips_aspect_ratio(lips):
     # Vertical distance
     dist1 = dist.euclidean(lips[2], lips[6])  # L3-L7
@@ -55,26 +47,22 @@ def lips_aspect_ratio(lips):
 
     return lar
 
-
 '''
 Facial Landmarks for any face part
 Function to calculate facial landmark point coordinates (x,y),
 draw them on frame and return a numpy array with the corresponding points
 '''
-
-
 def draw_landmarks(face_part, landmarks,frame):
     landmarks_list = []
-    start_frame = frame
+    # start_frame = frame
     for point in face_part:
         x, y = landmarks.part(point).x, landmarks.part(point).y
         landmarks_list.append([x, y])
-        cv2.circle(frame, (x, y), 2, (0, 0, 255), -1)
+        # cv2.circle(frame, (x, y), 2, (0, 0, 255), -1)
     return np.array(landmarks_list)
 
 
-
-def analyze_frame(frame):
+def analyze_frame(frame, cfg, detector, predictor):
     blinking = False
     yawning = False
     # Grayscale
@@ -118,19 +106,11 @@ def analyze_frame(frame):
 
         lar = lips_aspect_ratio(lips_points)  # Lips aspect ratio
 
-        if ear < ear_thresh:
+        if ear < cfg.getfloat('YAWN', 'ear_thresh'):
             blinking = True
-        if lar > lar_thresh:
+        if lar > cfg.getfloat('YAWN', 'lar_thresh'):
             yawning = True
-    return (blinking, yawning, ear, lar)
 
-def calculate_scores(frame):
-    # DLIB - Face Detector and Predictor
-    detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+    print(blinking, yawning)
+    return blinking, yawning # , ear, lar
 
-    return analyze_frame(frame)
-
-
-if __name__ == '__main__':
-    main()

@@ -11,7 +11,7 @@ function playVideo(videoId){
     var status = document.getElementById(videoId).getAttribute("status");
     if (status == null || status=="off"){
         document.getElementById(videoId).setAttribute("status", "on");
-        $.get("/video_feed");
+        $.get("/video_feed", { id: videoId });
     }
     else{
         document.getElementById(videoId).setAttribute("status", "off");
