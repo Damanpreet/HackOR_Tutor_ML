@@ -20,11 +20,9 @@ recorder = None
 
 # Blink initializations
 blink_counter, yawn_counter = 0, 0
-
 # Yawn initializations
 total_blinks, total_yawns = defaultdict(lambda: 0), defaultdict(lambda: 0)
 total_drowsiness = defaultdict(lambda: 0)
-
 # read the config file.
 cfg = configparser.ConfigParser()
 cfg.read('config.INI')
