@@ -92,7 +92,7 @@ def video_feed():
     
     try:
         username = request.args['username']
-        print(f"username: {username}")
+        # print(f"username: {username}")
     except:
         username = "user-0"
     global recorder
@@ -109,7 +109,7 @@ def video_stop():
         videoId = 0
     try:
         username = request.args['username']
-        print(f"username: {username}")
+        # print(f"username: {username}")
     except:
         username = "user-0"
 

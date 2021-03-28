@@ -27,7 +27,7 @@ def show_results():
 
 def calc_results(username, videoId, frameCount, cfg, total_blinks, total_drowsiness, total_yawns):
     try: 
-        with open(f"{username}.pickle", "rb") as f:
+        with open(str(username)+".pickle", "rb") as f:
             results = pickle.load(f)
     except:
         results = {}
@@ -38,5 +38,5 @@ def calc_results(username, videoId, frameCount, cfg, total_blinks, total_drowsin
     results[videoId] = (res[0]+frameCount/cfg.getint('CAMERA', 'fps'), res[1]+total_blinks[videoId], res[2]+total_drowsiness[videoId], res[3]+total_yawns[videoId])
     
     # dump pickle file
-    with open(f"{username}.pickle", "wb") as f:
+    with open(str(username)+".pickle", "wb") as f:
         pickle.dump(results, f, protocol=pickle.HIGHEST_PROTOCOL)
