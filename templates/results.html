@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+    <head>
+
+    </head>
+
+    <body>
+        <table>
+            <thead>
+                <th>Video ID</th>
+                <th>Camera and FPS</th>
+                <th>Total Number Of Blinks</th>
+                <th>Total Drowisness</th>
+                <th>Total Yawns</th>
+            </thead>
+
+            <tbody>
+                {% for r in results %}
+                <tr>
+                    <td>{{ r[0] }}</td>
+                    <td>{{ r[1] }}</td>
+                    <td>{{ r[2] }}</td>
+                    <td>{{ r[3] }}</td>
+                    <td>{{ r[4] }}</td>
+                </tr>
+               {% endfor %}
+            </tbody>
+        </table>
+
+        
+    </body>
+</html>
